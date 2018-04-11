@@ -1,0 +1,22 @@
+policy-options {
+    policy-statement {{ policy_name }} {
+        term 10 {
+            from {
+                route-filter {{ advertised_route_addr }}/{{ advertised_route_subnet }} exact;
+            }
+            then accept;
+        }
+        term 999 {
+            then reject;
+        }
+    }
+}
+protocols {
+    bgp {
+        group {{ if_name }} {
+            neighbor {{ neighbor_addr }} {
+                export {{ policy_name }};
+            }
+        }
+    }
+}

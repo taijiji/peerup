@@ -1,0 +1,9 @@
+protocols {
+    bgp {
+        group {{ if_name }} {
+            neighbor {{ neighbor_addr }} {
+                import {{ policy_name }};
+            }
+        }
+    }
+}

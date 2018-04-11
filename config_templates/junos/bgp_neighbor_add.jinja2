@@ -8,8 +8,8 @@ protocols {
             neighbor {{ neighbor_addr }} {
                 description {{ neighbor_description }};
                 peer-as {{ neighbor_asnum }};
-                export {{ policy_name_out }};
-                import {{ policy_name_in }};
+                export {{ policy_out }};
+                import {{ policy_in }};
             }
         }
     }

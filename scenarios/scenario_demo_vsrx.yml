@@ -19,7 +19,7 @@ scenario:
       os_version: 12.1X47-D15.4
   - check_interface:
       if_name: ge-0/0/2
-      if_status: down
+      if_status: up
   - set_interface:
       if_name: ge-0/0/2
       if_addr: 192.168.35.1
@@ -31,30 +31,32 @@ scenario:
   - set_bgp_neighbor:
       if_name: ge-0/0/2
       neighbor_asnum: 65002
-      local_asnum: 65001
       neighbor_addr: 192.168.35.2
       neighbor_description: AS65002_peer
-      policy_import: all-reject
-      policy_export: all-reject
+      policy_in: all-reject
+      policy_out: all-reject
   - check_bgp_neighbor:
       neighbor_addr: 192.168.35.2
       neighbor_status: up
-  - check_bgp_route_received:
-      neighbor_addr: 192.168.35.2
-      received_route_num: 0
   - check_bgp_route_advertised:
       neighbor_addr: 192.168.35.2
       advertised_route_num: 0
-  - set_bgp_route_received:
   - check_bgp_route_received:
       neighbor_addr: 192.168.35.2
-      received_route_num: 1
+      received_route_num: 0
   - set_bgp_route_advertised:
-      external_policy_name: AS65002_export
-      advertised_route_addr: 10.10.10.0
+      policy_name: as65002-out
+      advertised_route_addr: 172.16.1.0
       advertised_route_subnet: 24
       if_name: ge-0/0/2
       neighbor_addr: 192.168.35.2
   - check_bgp_route_advertised:
       neighbor_addr: 192.168.35.2
       advertised_route_num: 1
+  - set_bgp_route_received:
+      policy_name: all-accept
+      if_name: ge-0/0/2
+      neighbor_addr: 192.168.35.2
+  - check_bgp_route_received:
+      neighbor_addr: 192.168.35.2
+      received_route_num: 1

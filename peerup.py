@@ -34,6 +34,7 @@ def generate_from_jinja2(template_filename, template_param):
 
 
 def check_hostname(device, param):
+    print('-'*30)
     print('Check Hostname : ', end='')
 
     hostname_expected   = param['hostname']
@@ -50,6 +51,7 @@ def check_hostname(device, param):
 
 
 def check_model(device, param):
+    print('-'*30)
     print('Check Model : ', end='')
 
     model_expected   = param['model']
@@ -66,7 +68,9 @@ def check_model(device, param):
 
 
 def check_os_version(device, param):
+    print('-'*30)
     print('Check OS Version : ', end='')
+
     os_version_expected   = param['os_version']
     os_version_actual     = device.get_facts()['os_version']
 
@@ -81,6 +85,7 @@ def check_os_version(device, param):
 
 
 def check_interface(device, param):
+    print('-'*30)
     print('Check Interface : ', end='')
 
     if_status_expected = param['if_status']
@@ -102,9 +107,15 @@ def check_interface(device, param):
 
 
 def check_bgp_neighbor(device, param):
+    print('-'*30)
     print('Check BGP Neighbor : ', end='')
+
     neighbor_status_expected = param['neighbor_status']
-    neighbor_status_tmp = device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['is_up']
+
+    if device.get_bgp_neighbors() == {}:
+        neighbor_status_tmp = False
+    else:
+        neighbor_status_tmp = device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['is_up']
     
     if neighbor_status_tmp == True:
         neighbor_status_actual   = 'up'
@@ -122,10 +133,17 @@ def check_bgp_neighbor(device, param):
 
 
 def check_bgp_route_received(device, param):
+    print('-'*30)
     print('Check BGP Roue Received : ', end='')
+    
     received_route_num_expected = param['received_route_num']
-    received_route_num_actual =\
-        device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['received_prefixes']
+    
+    if device.get_bgp_neighbors() == {}:
+        received_route_num_actual = 0
+    else:        
+        received_route_num_actual =\
+            device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['received_prefixes']
+
     if received_route_num_actual == received_route_num_expected:
         print(Fore.GREEN + 'OK')
         print(Fore.GREEN + 'expected : ' + str(received_route_num_expected))
@@ -147,10 +165,17 @@ def check_bgp_route_received(device, param):
 
 
 def check_bgp_route_advertised(device, param):
+    print('-'*30)
     print('Check BGP Roue Adcertised : ', end='')
+
     advertised_route_num_expected = param['advertised_route_num']
-    advertised_route_num_actual =\
-        device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['sent_prefixes']
+    
+    if device.get_bgp_neighbors() == {}:
+        advertised_route_num_actual = 0
+    else:        
+        advertised_route_num_actual =\
+            device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['sent_prefixes']
+        
     if advertised_route_num_actual == advertised_route_num_expected:
         print(Fore.GREEN + 'OK')
         print(Fore.GREEN + 'expected : ' + str(advertised_route_num_expected))
@@ -171,6 +196,7 @@ def check_bgp_route_advertised(device, param):
     '''
 
 def set_interface(device, param):
+    print('-'*30)
     print('Set Interface : ')
 
     print('--- Generate Config ---')
@@ -198,23 +224,103 @@ def set_interface(device, param):
         device.discard_config()
         print(Fore.GREEN + "OK")
 
-    time.sleep(3) # interface shutdown実行完了を待つ処理。
+    time.sleep(3) #実行完了を待つ処理。
 
 
 def set_bgp_neighbor(device, param):
-    print('Set BGP Neighbor : ', end='')
+    print('-'*30)
+    print('Set BGP Neighbor : ')
+
+    print('--- Generate Config ---')
+    template_filename = 'config_templates/junos/bgp_neighbor_add.jinja2'
+    config_txt = generate_from_jinja2(template_filename, param)
+    print(Fore.YELLOW + config_txt)
+
+    print('--- Load Config ---')
+    device.load_merge_candidate(config=config_txt)
+    print('Load: ', end='')
     print(Fore.GREEN + 'OK')
 
+    print('--- Compare Diff ---')
+    print(Fore.YELLOW + device.compare_config())
 
+    print('--- Commit ---')
+    print(Fore.YELLOW + "Do you commit? y/n")
+    choice = input()
+    if choice == "y":
+        print("--- Commit config ---")
+        device.commit_config()
+        print(Fore.GREEN + "OK")
+    else:
+        print("--- Discard config ---")
+        device.discard_config()
+        print(Fore.GREEN + "OK")
 
-def set_bgp_route_received(device, param):
-    print('Set BGP Route Recieved : ', end='')
-    print(Fore.GREEN + 'OK')
+    time.sleep(3) #実行完了を待つ処理。
 
 
 def set_bgp_route_advertised(device, param):
+    print('-'*30)
     print('Set BGP Route Advertised : ', end='')
+    
+    print('--- Generate Config ---')
+    template_filename = 'config_templates/junos/routepolicy_out_change.jinja2'
+    config_txt = generate_from_jinja2(template_filename, param)
+    print(Fore.YELLOW + config_txt)
+
+    print('--- Load Config ---')
+    device.load_merge_candidate(config=config_txt)
+    print('Load: ', end='')
     print(Fore.GREEN + 'OK')
+
+    print('--- Compare Diff ---')
+    print(Fore.YELLOW + device.compare_config())
+
+    print('--- Commit ---')
+    print(Fore.YELLOW + "Do you commit? y/n")
+    choice = input()
+    if choice == "y":
+        print("--- Commit config ---")
+        device.commit_config()
+        print(Fore.GREEN + "OK")
+    else:
+        print("--- Discard config ---")
+        device.discard_config()
+        print(Fore.GREEN + "OK")
+
+    time.sleep(3) #実行完了を待つ処理。
+
+
+def set_bgp_route_received(device, param):
+    print('-'*30)
+    print('Set BGP Route Recieved : ', end='')
+    
+    print('--- Generate Config ---')
+    template_filename = 'config_templates/junos/routepolicy_in_change.jinja2'
+    config_txt = generate_from_jinja2(template_filename, param)
+    print(Fore.YELLOW + config_txt)
+
+    print('--- Load Config ---')
+    device.load_merge_candidate(config=config_txt)
+    print('Load: ', end='')
+    print(Fore.GREEN + 'OK')
+
+    print('--- Compare Diff ---')
+    print(Fore.YELLOW + device.compare_config())
+
+    print('--- Commit ---')
+    print(Fore.YELLOW + "Do you commit? y/n")
+    choice = input()
+    if choice == "y":
+        print("--- Commit config ---")
+        device.commit_config()
+        print(Fore.GREEN + "OK")
+    else:
+        print("--- Discard config ---")
+        device.discard_config()
+        print(Fore.GREEN + "OK")
+
+    time.sleep(3) #実行完了を待つ処理。
 
 
 def exec_scenario(device, operation_list):
@@ -240,13 +346,10 @@ def exec_scenario(device, operation_list):
             set_interface(device, opr_param)
         elif opr_name == 'set_bgp_neighbor':
             set_bgp_neighbor(device, opr_param)
-        '''
         elif opr_name == 'set_bgp_route_received':
             set_bgp_route_received(device, opr_param)
         elif opr_name == 'set_bgp_route_advertised':
             set_bgp_route_advertised(device, opr_param)
-        '''
-        
 
 
 if __name__ == '__main__':
@@ -285,3 +388,5 @@ if __name__ == '__main__':
 
     print('===== Run Scenario =====')
     exec_scenario(device, param['scenario'])
+
+    print('===== All Processes Completed!! =====')
