@@ -70,7 +70,25 @@ def check_os_version(device, param):
 
 def check_interface(device, param):
     print('Check Interface : ', end='')
-    print(Fore.GREEN + 'OK')
+
+    if_status_expected = param['if_status']
+
+    if_status_tmp = device.get_interfaces()[param['if_name']]['is_up']
+
+    if if_status_tmp == True:
+        if_status_actual   = 'up'
+    elif if_status_tmp == False:
+        if_status_actual   = 'down'
+    
+    if if_status_actual == if_status_expected:
+        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'expected : ' +  str(if_status_expected))
+        print(Fore.GREEN + 'actual   : ' +  str(if_status_actual))
+    else:
+        print(Fore.RED + 'NG')
+        print(Fore.RED + 'expected : ' +  str(if_status_expected))
+        print(Fore.RED + 'actual   : ' +  str(if_status_actual))
+
 
 
 
@@ -116,7 +134,7 @@ def set_bgp_route_advertised(device, param):
 
 def exec_scenario(device, operation_list):
     for operation in operation_list:
-        opr_name  = next(iter(operation))
+        opr_name  = list(operation.keys())[0]
         opr_param = operation[opr_name]
         #print(opr_name)
 
@@ -127,7 +145,27 @@ def exec_scenario(device, operation_list):
             #check_model(device, opr_param)
             pass
         elif opr_name == 'check_os_version':
-            check_os_version(device, opr_param)
+            #check_os_version(device, opr_param)
+            pass
+        elif opr_name == 'check_interface':
+            check_interface(device, opr_param)
+        '''
+        elif opr_name == 'check_bgp_neighbor':
+            check_bgp_neighbor(device, opr_param)
+        elif opr_name == 'check_bgp_route_received':
+            check_bgp_route_received(device, opr_param)
+        elif opr_name == 'check_bgp_route_advertised':
+            check_bgp_route_advertised(device, opr_param)
+        elif opr_name == 'set_interface':
+            set_interface(device, opr_param)
+        elif opr_name == 'set_bgp_neighbor':
+            set_bgp_neighbor(device, opr_param)
+        elif opr_name == 'set_bgp_route_received':
+            set_bgp_route_received(device, opr_param)
+        elif opr_name == 'set_bgp_route_advertised':
+            set_bgp_route_advertised(device, opr_param)
+        '''
+        
 
 
 if __name__ == '__main__':
