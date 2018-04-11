@@ -201,9 +201,9 @@ def exec_scenario(device, operation_list):
             check_bgp_route_received(device, opr_param)
         elif opr_name == 'check_bgp_route_advertised':
             check_bgp_route_advertised(device, opr_param)
-        '''
         elif opr_name == 'set_interface':
             set_interface(device, opr_param)
+        '''
         elif opr_name == 'set_bgp_neighbor':
             set_bgp_neighbor(device, opr_param)
         elif opr_name == 'set_bgp_route_received':
