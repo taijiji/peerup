@@ -1,0 +1,16 @@
+protocols {
+    bgp {
+        group {{ if_name }} {
+            family inet {
+                unicast;
+            }
+            type external;
+            neighbor {{ neighbor_addr }} {
+                description {{ neighbor_description }};
+                peer-as {{ neighbor_asnum }};
+                export {{ policy_name_out }};
+                import {{ policy_name_in }};
+            }
+        }
+    }
+}

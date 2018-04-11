@@ -1,0 +1,10 @@
+interfaces {
+   {{ if_name }} {
+        unit 0 {            
+            description {{ if_description }};
+            family inet {
+                address {{ if_address }}/{{ if_subnet }};
+            }
+        }
+    }
+}
