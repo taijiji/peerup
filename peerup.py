@@ -52,10 +52,19 @@ def check_model(device, param):
         print(Fore.RED + 'actual   : ' +  model_actual)
 
 
-
 def check_os_version(device, param):
     print('Check OS Version : ', end='')
-    print(Fore.GREEN + 'OK')
+    os_version_expected   = param['os_version']
+    os_version_actual     = device.get_facts()['os_version']
+
+    if os_version_actual == os_version_expected:
+        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'expected : ' +  os_version_expected)
+        print(Fore.GREEN + 'actual   : ' +  os_version_actual)
+    else:
+        print(Fore.RED + 'NG')
+        print(Fore.RED + 'expected : ' +  os_version_expected)
+        print(Fore.RED + 'actual   : ' +  os_version_actual)
 
 
 
@@ -112,9 +121,13 @@ def exec_scenario(device, operation_list):
         #print(opr_name)
 
         if opr_name == 'check_hostname':
-            check_hostname(device, opr_param)
+            #check_hostname(device, opr_param)
+            pass
         elif opr_name == 'check_model':
-            check_model(device, opr_param)
+            #check_model(device, opr_param)
+            pass
+        elif opr_name == 'check_os_version':
+            check_os_version(device, opr_param)
 
 
 if __name__ == '__main__':

@@ -16,6 +16,7 @@ scenario:
   - check_model:
       model: FIREFLY-PERIMETER
   - check_os_version:
+      os_version: 12.1X47-D15.4
   - check_interface:
       if_name: ge-0/0/2
       if_status: down
