@@ -5,6 +5,7 @@ import napalm
 from colorama import init as colorama_init
 from colorama import Fore
 
+import sys
 from pprint import pprint
 
 # Init Color Font
@@ -67,12 +68,10 @@ def check_os_version(device, param):
         print(Fore.RED + 'actual   : ' +  os_version_actual)
 
 
-
 def check_interface(device, param):
     print('Check Interface : ', end='')
 
     if_status_expected = param['if_status']
-
     if_status_tmp = device.get_interfaces()[param['if_name']]['is_up']
 
     if if_status_tmp == True:
@@ -93,9 +92,8 @@ def check_interface(device, param):
 def check_bgp_neighbor(device, param):
     print('Check BGP Neighbor : ', end='')
     neighbor_status_expected = param['neighbor_status']
-
-    neighbor_status_tmp = device.get_neighbors()['global']['peer']['neighbor_asnum']['is_up']
-
+    neighbor_status_tmp = device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['is_up']
+    
     if neighbor_status_tmp == True:
         neighbor_status_actual   = 'up'
     elif neighbor_status_tmp == False:
@@ -150,21 +148,15 @@ def exec_scenario(device, operation_list):
     for operation in operation_list:
         opr_name  = list(operation.keys())[0]
         opr_param = operation[opr_name]
-        #print(opr_name)
 
         if opr_name == 'check_hostname':
-            #check_hostname(device, opr_param)
-            pass
+            check_hostname(device, opr_param)
         elif opr_name == 'check_model':
-            #check_model(device, opr_param)
-            pass
+            check_model(device, opr_param)
         elif opr_name == 'check_os_version':
-            #check_os_version(device, opr_param)
-            pass
+            check_os_version(device, opr_param)
         elif opr_name == 'check_interface':
-            #check_interface(device, opr_param)
-            pass
-    
+            check_interface(device, opr_param)    
         elif opr_name == 'check_bgp_neighbor':
             check_bgp_neighbor(device, opr_param)
         '''

@@ -4,15 +4,15 @@ purpus:  |
 operator: Taiji Tsuchiya
 operation_date: 20180410
 hosts:
-  hostname: vsrx
+  hostname: vsrx1
   os: junos
   username: user1
   password: password1
-  mgmt_ipaddress: 192.168.33.3
+  mgmt_ipaddress: 192.168.33.2
 
 scenario:
   - check_hostname:
-      hostname: vsrx
+      hostname: vsrx1
   - check_model:
       model: FIREFLY-PERIMETER
   - check_os_version:
@@ -20,10 +20,6 @@ scenario:
   - check_interface:
       if_name: ge-0/0/2
       if_status: down
-  - check_bgp_neighbor:
-      neighbor_asnum: 65002
-      neighbor_addr: 192.168.35.2
-      neighbor_status: up
   - set_interface:
       if_name: ge-0/0/2
       if_addr: 192.168.35.1
@@ -32,15 +28,14 @@ scenario:
   - check_interface:
       if_name: ge-0/0/2
       if_status: up
-  - check_bgp_neighbor:
-      neighbor_addr: 192.168.35.2
-      neighbor_status: up
   - set_bgp_neighbor:
       if_name: ge-0/0/2
       neighbor_asnum: 65002
       local_asnum: 65001
       neighbor_addr: 192.168.35.2
       neighbor_description: AS65002_peer
+      policy_import: all-reject
+      policy_export: all-reject
   - check_bgp_neighbor:
       neighbor_asnum: 65002
       neighbor_addr: 192.168.35.2

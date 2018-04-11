@@ -1,5 +1,5 @@
 policy-options {
-    policy-statement {{ policy_name_out }} {
+    t {{ policy_name_out }} {
         term 10 {
             from {
                 route-filter {{ advertised_route_address }}/{{ advertised_route_subnet }} exact;
@@ -10,4 +10,3 @@ policy-options {
             then reject;
         }
     }
-}
