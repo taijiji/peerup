@@ -114,16 +114,16 @@ if __name__ == '__main__':
 
     print('===== Login Router =====')
     print("login router : ", end='')
-    '''
+    
     driver = napalm.get_network_driver(param['hosts']['os'])
     device = driver(
                 hostname=param['hosts']['mgmt_ipaddress'],
-                username=param['username'],
-                password=param['password'])
+                username=param['hosts']['username'],
+                password=param['hosts']['password'])
     device.open()
-    '''
+    
     print(Fore.GREEN + 'OK')
 
 
     print('===== Run Scenario =====')
-    exec_scenario(param['scenario'])
+    #exec_scenario(param['scenario'])

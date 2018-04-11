@@ -5,7 +5,7 @@ operator: Taiji Tsuchiya
 operation_date: 20180410
 hosts:
   hostname: vsrx1
-  os : junos
+  os: junos
   username: user1
   password: password1
   mgmt_ipaddress: 192.168.33.3
