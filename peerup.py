@@ -1,11 +1,13 @@
 import yaml
 import napalm
+from jinja2 import Template, Environment
 
 # For Color Font
 from colorama import init as colorama_init
 from colorama import Fore
 
 import sys
+import time
 from pprint import pprint
 
 # Init Color Font
@@ -19,6 +21,16 @@ def load_scenario_file(scenario_filename):
     param = yaml.load(param_yaml)
 
     return param
+
+
+def generate_from_jinja2(template_filename, template_param):
+        # read template file (jinja2 format)
+        with open(template_filename, 'r') as f:
+            template_jinja2 = f.read()
+
+        # generate nwtest file from template file
+        return Environment().from_string(template_jinja2).render(template_param)
+        
 
 
 def check_hostname(device, param):
@@ -158,12 +170,35 @@ def check_bgp_route_advertised(device, param):
         pass
     '''
 
-
-
 def set_interface(device, param):
-    print('Set Interface : ', end='')
+    print('Set Interface : ')
+
+    print('--- Generate Config ---')
+    template_filename = 'config_templates/junos/interface_add.jinja2'
+    config_txt = generate_from_jinja2(template_filename, param)
+    print(Fore.YELLOW + config_txt)
+
+    print('--- Load Config ---')
+    device.load_merge_candidate(config=config_txt)
+    print('Load: ', end='')
     print(Fore.GREEN + 'OK')
 
+    print('--- Compare Diff ---', end='')
+    print(Fore.YELLOW + device.compare_config())
+
+    print('--- Commit ---')
+    print(Fore.YELLOW + "Do you commit? y/n")
+    choice = input()
+    if choice == "y":
+        print("Commit config: ", end="")
+        device.commit_config()
+        print(Fore.GREEN + "OK")
+    else:
+        print("Discard config: ", end="")
+        device.discard_config()
+        print(Fore.GREEN + "OK")
+
+    time.sleep(3) # interface shutdown実行完了を待つ処理。
 
 
 def set_bgp_neighbor(device, param):
@@ -203,9 +238,9 @@ def exec_scenario(device, operation_list):
             check_bgp_route_advertised(device, opr_param)
         elif opr_name == 'set_interface':
             set_interface(device, opr_param)
-        '''
         elif opr_name == 'set_bgp_neighbor':
             set_bgp_neighbor(device, opr_param)
+        '''
         elif opr_name == 'set_bgp_route_received':
             set_bgp_route_received(device, opr_param)
         elif opr_name == 'set_bgp_route_advertised':
