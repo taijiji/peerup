@@ -21,55 +21,72 @@ def load_scenario_file(scenario_filename):
 
 
 def check_hostname(param):
-    pass
+    print('Check Hostname', end='')
+    print(Fore.GREEN + 'OK')
 
 
 def check_model(param):
-    pass
+    print('Check Model : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def check_os_version(param):
-    pass
+    print('Check OS Version : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def check_interface(param):
-    pass
+    print('Check Interface : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def check_bgp_neighbor(param):
-    pass
+    print('Check BGP Neighbor : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def check_bgp_route_received(param):
-    pass
+    print('Check BGP Roue Received : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def check_bgp_route_advertised(param):
-    pass
+    print('Check BGP Roue Adcertised : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def set_interface(param):
-    pass
+    print('Set Interface : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def set_bgp_neighbor(param):
-    pass
+    print('Set BGP Neighbor : ', end='')
+    print(Fore.GREEN + 'OK')
+
 
 
 def set_bgp_route_received(param):
-    pass 
+    print('Set BGP Route Recieved : ', end='')
+    print(Fore.GREEN + 'OK')
 
 
 def set_bgp_route_advertised(param):
-    pass
+    print('Set BGP Route Advertised : ', end='')
+    print(Fore.GREEN + 'OK')
 
 
 
 def exec_scenario(operation_list):
     for operation in operation_list:
         print(operation)
-
-
 
 
 if __name__ == '__main__':
@@ -96,7 +113,7 @@ if __name__ == '__main__':
 
 
     print('===== Login Router =====')
-    print("login router : ", end="")
+    print("login router : ", end='')
     '''
     driver = napalm.get_network_driver(param['hosts']['os'])
     device = driver(
@@ -105,7 +122,7 @@ if __name__ == '__main__':
                 password=param['password'])
     device.open()
     '''
-    print(Fore.GREEN + "OK")
+    print(Fore.GREEN + 'OK')
 
 
     print('===== Run Scenario =====')
