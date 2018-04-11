@@ -109,16 +109,54 @@ def check_bgp_neighbor(device, param):
         print(Fore.RED + 'actual   : ' +  neighbor_status_actual)
 
 
-
 def check_bgp_route_received(device, param):
     print('Check BGP Roue Received : ', end='')
-    print(Fore.GREEN + 'OK')
-
+    received_route_num_expected = param['received_route_num']
+    received_route_num_actual =\
+        device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['received_prefixes']
+    if received_route_num_actual == received_route_num_expected:
+        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'expected : ' + str(received_route_num_expected))
+        print(Fore.GREEN + 'actual   : ' + str(received_route_num_actual))
+    else:
+        print(Fore.RED + 'NG')
+        print(Fore.RED + 'expected : ' +  str(received_route_num_expected))
+        print(Fore.RED + 'actual   : ' +  str(received_route_num_actual))
+    
+    '''
+    if device.get_facts()['vendor'] == 'Juniper':
+        commands_junos = 'show route receive-protocol bgp ' + param['neighbor_addr']
+        cli_result = device.cli([commands_junos])
+        print(Fore.YELLOW + 'Reulst: ' + commands_junos)
+        print(Fore.YELLOW + str(cli_result[commands_junos]))
+    else:
+        pass
+    '''
 
 
 def check_bgp_route_advertised(device, param):
     print('Check BGP Roue Adcertised : ', end='')
-    print(Fore.GREEN + 'OK')
+    advertised_route_num_expected = param['advertised_route_num']
+    advertised_route_num_actual =\
+        device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['sent_prefixes']
+    if advertised_route_num_actual == advertised_route_num_expected:
+        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'expected : ' + str(advertised_route_num_expected))
+        print(Fore.GREEN + 'actual   : ' + str(advertised_route_num_actual))
+    else:
+        print(Fore.RED + 'NG')
+        print(Fore.RED + 'expected : ' +  str(advertised_route_num_expected))
+        print(Fore.RED + 'actual   : ' +  str(advertised_route_num_actual))
+
+    '''
+    if device.get_facts()['vendor'] == 'Juniper':
+        commands_junos = 'show route advertising-protocol bgp ' + param['neighbor_addr']
+        cli_result = device.cli([commands_junos])
+        print(Fore.YELLOW + 'Reulst: ' + commands_junos)
+        print(Fore.YELLOW + str(cli_result[commands_junos]))
+    else:
+        pass
+    '''
 
 
 
@@ -159,11 +197,11 @@ def exec_scenario(device, operation_list):
             check_interface(device, opr_param)    
         elif opr_name == 'check_bgp_neighbor':
             check_bgp_neighbor(device, opr_param)
-        '''
         elif opr_name == 'check_bgp_route_received':
             check_bgp_route_received(device, opr_param)
         elif opr_name == 'check_bgp_route_advertised':
             check_bgp_route_advertised(device, opr_param)
+        '''
         elif opr_name == 'set_interface':
             set_interface(device, opr_param)
         elif opr_name == 'set_bgp_neighbor':

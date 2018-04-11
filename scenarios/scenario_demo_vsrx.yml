@@ -37,22 +37,18 @@ scenario:
       policy_import: all-reject
       policy_export: all-reject
   - check_bgp_neighbor:
-      neighbor_asnum: 65002
       neighbor_addr: 192.168.35.2
       neighbor_status: up
   - check_bgp_route_received:
       neighbor_addr: 192.168.35.2
-      received_route_addr: 10.10.30.0
-      received_route_subnet: 24
+      received_route_num: 0
   - check_bgp_route_advertised:
       neighbor_addr: 192.168.35.2
-      advertised_route_addr: 10.10.10.0
-      advertised_route_subnet: 24
+      advertised_route_num: 0
   - set_bgp_route_received:
   - check_bgp_route_received:
       neighbor_addr: 192.168.35.2
-      received_route_addr: 10.10.30.0
-      received_route_subnet: 24
+      received_route_num: 1
   - set_bgp_route_advertised:
       external_policy_name: AS65002_export
       advertised_route_addr: 10.10.10.0
@@ -61,5 +57,4 @@ scenario:
       neighbor_addr: 192.168.35.2
   - check_bgp_route_advertised:
       neighbor_addr: 192.168.35.2
-      advertised_route_addr: 10.10.10.0
-      advertised_route_subnet: 24
+      advertised_route_num: 1
