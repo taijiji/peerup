@@ -4,11 +4,12 @@ purpus:  |
 operator: Taiji Tsuchiya
 operation_date: 20180410
 hosts:
-  management_ipaddress: 192.168.33.3
   hostname: vsrx1
   os : junos
   username: user1
   password: password1
+  mgmt_ipaddress: 192.168.33.3
+
 scenario:
   - check_hostname:
       hostname: vsrx1
