@@ -4,7 +4,7 @@ purpus:  |
 operator: Taiji Tsuchiya
 operation_date: 20180410
 hosts:
-  hostname: vsrx1
+  hostname: vsrx
   os: junos
   username: user1
   password: password1
@@ -12,7 +12,7 @@ hosts:
 
 scenario:
   - check_hostname:
-      hostname: vsrx1
+      hostname: vsrx
   - check_model:
       model: firefly-perimeter
   - check_os_version:
