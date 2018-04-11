@@ -21,6 +21,7 @@ scenario:
       if_name: ge-0/0/2
       if_status: down
   - check_bgp_neighbor:
+      neighbor_asnum: 65002
       neighbor_addr: 192.168.35.2
       neighbor_status: up
   - set_interface:
@@ -41,6 +42,7 @@ scenario:
       neighbor_addr: 192.168.35.2
       neighbor_description: AS65002_peer
   - check_bgp_neighbor:
+      neighbor_asnum: 65002
       neighbor_addr: 192.168.35.2
       neighbor_status: up
   - check_bgp_route_received:

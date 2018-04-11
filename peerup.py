@@ -82,19 +82,33 @@ def check_interface(device, param):
     
     if if_status_actual == if_status_expected:
         print(Fore.GREEN + 'OK')
-        print(Fore.GREEN + 'expected : ' +  str(if_status_expected))
-        print(Fore.GREEN + 'actual   : ' +  str(if_status_actual))
+        print(Fore.GREEN + 'expected : ' +  if_status_expected)
+        print(Fore.GREEN + 'actual   : ' +  if_status_actual)
     else:
         print(Fore.RED + 'NG')
-        print(Fore.RED + 'expected : ' +  str(if_status_expected))
-        print(Fore.RED + 'actual   : ' +  str(if_status_actual))
-
-
+        print(Fore.RED + 'expected : ' +  if_status_expected)
+        print(Fore.RED + 'actual   : ' +  if_status_actual)
 
 
 def check_bgp_neighbor(device, param):
     print('Check BGP Neighbor : ', end='')
-    print(Fore.GREEN + 'OK')
+    neighbor_status_expected = param['neighbor_status']
+
+    neighbor_status_tmp = device.get_neighbors()['global']['peer']['neighbor_asnum']['is_up']
+
+    if neighbor_status_tmp == True:
+        neighbor_status_actual   = 'up'
+    elif neighbor_status_tmp == False:
+        neighbor_status_actual   = 'down'
+    
+    if neighbor_status_actual == neighbor_status_expected:
+        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'expected : ' +  neighbor_status_expected)
+        print(Fore.GREEN + 'actual   : ' +  neighbor_status_actual)
+    else:
+        print(Fore.RED + 'NG')
+        print(Fore.RED + 'expected : ' +  neighbor_status_expected)
+        print(Fore.RED + 'actual   : ' +  neighbor_status_actual)
 
 
 
@@ -148,10 +162,12 @@ def exec_scenario(device, operation_list):
             #check_os_version(device, opr_param)
             pass
         elif opr_name == 'check_interface':
-            check_interface(device, opr_param)
-        '''
+            #check_interface(device, opr_param)
+            pass
+    
         elif opr_name == 'check_bgp_neighbor':
             check_bgp_neighbor(device, opr_param)
+        '''
         elif opr_name == 'check_bgp_route_received':
             check_bgp_route_received(device, opr_param)
         elif opr_name == 'check_bgp_route_advertised':
