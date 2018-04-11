@@ -14,7 +14,7 @@ scenario:
   - check_hostname:
       hostname: vsrx
   - check_model:
-      model: firefly-perimeter
+      model: FIREFLY-PERIMETER
   - check_os_version:
   - check_interface:
       if_name: ge-0/0/2

@@ -38,7 +38,18 @@ def check_hostname(device, param):
 
 def check_model(device, param):
     print('Check Model : ', end='')
-    print(Fore.GREEN + 'OK')
+
+    model_expected   = param['model']
+    model_actual     = device.get_facts()['model']
+
+    if model_actual == model_expected:
+        print(Fore.GREEN + 'OK')
+        print(Fore.GREEN + 'expected : ' +  model_expected)
+        print(Fore.GREEN + 'actual   : ' +  model_actual)
+    else:
+        print(Fore.RED + 'NG')
+        print(Fore.RED + 'expected : ' +  model_expected)
+        print(Fore.RED + 'actual   : ' +  model_actual)
 
 
 
