@@ -175,7 +175,9 @@ def check_bgp_route_advertised(device, param):
     else:        
         advertised_route_num_actual =\
             device.get_bgp_neighbors()['global']['peers'][param['neighbor_addr']]['address_family']['ipv4']['sent_prefixes']
-        
+        if advertised_route_num_actual < 0:
+            advertised_route_num_actual = 0
+
     if advertised_route_num_actual == advertised_route_num_expected:
         print(Fore.GREEN + 'OK')
         print(Fore.GREEN + 'expected : ' + str(advertised_route_num_expected))
@@ -209,7 +211,7 @@ def set_interface(device, param):
     print('Load: ', end='')
     print(Fore.GREEN + 'OK')
 
-    print('--- Compare Diff ---', end='')
+    print('--- Compare Diff ---')
     print(Fore.YELLOW + device.compare_config())
 
     print('--- Commit ---')
@@ -219,12 +221,15 @@ def set_interface(device, param):
         print("Commit config: ", end="")
         device.commit_config()
         print(Fore.GREEN + "OK")
+        
+        print('Wait 5 sec')
+        time.sleep(5) #実行完了を待つ処理。
+
     else:
         print("Discard config: ", end="")
         device.discard_config()
         print(Fore.GREEN + "OK")
 
-    time.sleep(3) #実行完了を待つ処理。
 
 
 def set_bgp_neighbor(device, param):
@@ -251,12 +256,15 @@ def set_bgp_neighbor(device, param):
         print("--- Commit config ---")
         device.commit_config()
         print(Fore.GREEN + "OK")
+        
+        print('Wait 5 sec')
+        time.sleep(5) #実行完了を待つ処理。
     else:
         print("--- Discard config ---")
         device.discard_config()
         print(Fore.GREEN + "OK")
+        
 
-    time.sleep(3) #実行完了を待つ処理。
 
 
 def set_bgp_route_advertised(device, param):
@@ -283,18 +291,19 @@ def set_bgp_route_advertised(device, param):
         print("--- Commit config ---")
         device.commit_config()
         print(Fore.GREEN + "OK")
+
+        print('Wait 5 sec')
+        time.sleep(5) #実行完了を待つ処理。
     else:
         print("--- Discard config ---")
         device.discard_config()
         print(Fore.GREEN + "OK")
 
-    time.sleep(3) #実行完了を待つ処理。
-
 
 def set_bgp_route_received(device, param):
     print('-'*30)
     print('Set BGP Route Recieved : ', end='')
-    
+
     print('--- Generate Config ---')
     template_filename = 'config_templates/junos/routepolicy_in_change.jinja2'
     config_txt = generate_from_jinja2(template_filename, param)
@@ -315,12 +324,13 @@ def set_bgp_route_received(device, param):
         print("--- Commit config ---")
         device.commit_config()
         print(Fore.GREEN + "OK")
+
+        print('Wait 10 sec')
+        time.sleep(10) #実行完了を待つ処理。
     else:
         print("--- Discard config ---")
         device.discard_config()
         print(Fore.GREEN + "OK")
-
-    time.sleep(3) #実行完了を待つ処理。
 
 
 def exec_scenario(device, operation_list):

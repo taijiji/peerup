@@ -43,7 +43,7 @@ scenario:
       advertised_route_num: 0
   - check_bgp_route_received:
       neighbor_addr: 192.168.35.2
-      received_route_num: 0
+      received_route_num: 1
   - set_bgp_route_advertised:
       policy_name: as65002-out
       advertised_route_addr: 172.16.1.0
