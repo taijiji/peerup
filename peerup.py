@@ -1,3 +1,6 @@
+import sys
+import time
+
 import yaml
 import napalm
 from jinja2 import Template, Environment
@@ -5,10 +8,6 @@ from jinja2 import Template, Environment
 # For Color Font
 from colorama import init as colorama_init
 from colorama import Fore
-
-import sys
-import time
-from pprint import pprint
 
 # Init Color Font
 colorama_init(autoreset=True)
@@ -31,7 +30,6 @@ def generate_from_jinja2(template_filename, template_param):
         # generate nwtest file from template file
         return Environment().from_string(template_jinja2).render(template_param)
         
-
 
 def check_hostname(device, param):
     print('-'*30)
@@ -231,7 +229,6 @@ def set_interface(device, param):
         print(Fore.GREEN + "OK")
 
 
-
 def set_bgp_neighbor(device, param):
     print('-'*30)
     print('Set BGP Neighbor : ')
@@ -264,8 +261,6 @@ def set_bgp_neighbor(device, param):
         device.discard_config()
         print(Fore.GREEN + "OK")
         
-
-
 
 def set_bgp_route_advertised(device, param):
     print('-'*30)
@@ -325,8 +320,8 @@ def set_bgp_route_received(device, param):
         device.commit_config()
         print(Fore.GREEN + "OK")
 
-        print('Wait 10 sec')
-        time.sleep(10) #実行完了を待つ処理。
+        print('Wait 5 sec')
+        time.sleep(5) #実行完了を待つ処理。
     else:
         print("--- Discard config ---")
         device.discard_config()
@@ -367,15 +362,12 @@ if __name__ == '__main__':
     scenario_filename = 'scenarios/scenario_demo_vsrx.yml'
 
     param = load_scenario_file(scenario_filename)
-    #pprint(param)
-
 
     print('===== Operation Information =====')
     print('purpus:')
     print(param['purpus'])
     print('Operator        : ' + param['operator'])
     print('Operation Date  : ' + str(param['operation_date']))
-
 
     print('===== Host Information =====')
     print('Host Name        : ' + param['hosts']['hostname'])
@@ -384,9 +376,8 @@ if __name__ == '__main__':
     print('Password         : ' + param['hosts']['password'])
     print('mgmt_ipaddress   : ' + param['hosts']['mgmt_ipaddress'])
 
-
     print('===== Login Router =====')
-    print("login router : ", end='')
+    print("Login router : ", end='')
     driver = napalm.get_network_driver(param['hosts']['os'])
     device = driver(
                 hostname=param['hosts']['mgmt_ipaddress'],
@@ -394,7 +385,6 @@ if __name__ == '__main__':
                 password=param['hosts']['password'])
     device.open()
     print(Fore.GREEN + 'OK')
-
 
     print('===== Run Scenario =====')
     exec_scenario(device, param['scenario'])

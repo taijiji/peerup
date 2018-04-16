@@ -9,7 +9,6 @@ hosts:
   username: user1
   password: password1
   mgmt_ipaddress: 192.168.33.2
-
 scenario:
   - check_hostname:
       hostname: vsrx1
@@ -33,8 +32,6 @@ scenario:
       neighbor_asnum: 65002
       neighbor_addr: 192.168.35.2
       neighbor_description: AS65002_peer
-      policy_in: all-reject
-      policy_out: all-reject
   - check_bgp_neighbor:
       neighbor_addr: 192.168.35.2
       neighbor_status: up
