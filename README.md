@@ -75,12 +75,12 @@ scenario:
 
 # Result
 
-![movie](img/peerup_movie_v1.mov)
+<img src="https://github.com/taijiji/peerup/blob/master/img/peerup_movie_v1.gif" width="1000px">
 
-<img src="img/result_1.png" width="300px">
-<img src="img/result_2.png" width="200px">
-<img src="img/result_3.png" width="200px">
-<img src="img/result_4.png" width="200px">
-<img src="img/result_5.png" width="200px">
-<img src="img/result_6.png" width="200px">
-<img src="img/result_7.png" width="200px">
+<img src="img/result_1.png" width="900px">
+<img src="img/result_2.png" width="400px">
+<img src="img/result_3.png" width="400px">
+<img src="img/result_4.png" width="500px">
+<img src="img/result_5.png" width="500px">
+<img src="img/result_6.png" width="500px">
+<img src="img/result_7.png" width="500px">
