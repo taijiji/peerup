@@ -254,8 +254,8 @@ def set_bgp_neighbor(device, param):
         device.commit_config()
         print(Fore.GREEN + "OK")
         
-        print('Wait 5 sec')
-        time.sleep(5) #実行完了を待つ処理。
+        print('Wait 10 sec')
+        time.sleep(10) #実行完了を待つ処理。
     else:
         print("--- Discard config ---")
         device.discard_config()
