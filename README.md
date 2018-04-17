@@ -1,7 +1,8 @@
 # peerup
-BGP Private Peering Sample Tool.
+Sample Network Automation Tool for BGP Private Peering.
 
-<img src="img/system.png" width="500px">
+
+<img src="img/system.png" width="1000px">
 
 # How to run
 
@@ -75,9 +76,9 @@ scenario:
 
 # Result
 
-<img src="https://github.com/taijiji/peerup/blob/master/img/peerup_movie_v1.gif" width="1000px">
+<img src="https://github.com/taijiji/peerup/blob/master/img/peerup_movie_v1.gif" width="1300px">
 
-<img src="img/result_1.png" width="900px">
+<img src="img/result_1.png" width="600px">
 <img src="img/result_2.png" width="400px">
 <img src="img/result_3.png" width="400px">
 <img src="img/result_4.png" width="500px">
