@@ -1,6 +1,8 @@
 # peerup
 Sample Network Automation Tool for BGP Private Peering.
 
+This tool was used in [this presentation](https://speakerdeck.com/taijijiji/ming-ri-karahazimerunetutowakuyun-yong-zi-dong-hua-shi-jian-bian)
+
 
 <img src="img/system.png" width="1000px">
 
